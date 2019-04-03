@@ -2,11 +2,37 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+/**
+ * @class App
+ * @extends {Component}
+ */
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = [];
+    this.state = {
+      bookName: '',
+      bookNumber: 0
+    };
   }
+
+  /**
+   * @function
+   *
+   * @memberof App
+   */
+  onBookReset = () => {
+    this.setState({ bookName: '', bookNumber: 0 });
+  };
+
+  /**
+   * @function
+   * @param  {String} name - The name of book
+   * @param  {Number} rentValue - The value of book rent
+   * @memberof App
+   */
+  onBookChange = (name, rentValue) => {
+    this.setState({ bookName: name, bookNumber: rentValue });
+  };
 
   render() {
     return (
@@ -14,7 +40,8 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            Edit <code>src/App.js</code> and save to reload.
+            Edit
+            <code>src/App.js</code> and save to reload.
           </p>
           <a
             className="App-link"

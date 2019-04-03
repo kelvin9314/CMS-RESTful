@@ -13,7 +13,7 @@ module.exports = {
     'jest-enzyme',
     'plugin:jest/recommended'
   ],
-  plugins: ['prettier', 'jest', 'react', 'jsx-a11y', 'import'],
+  plugins: ['prettier', 'jest', 'react', 'jsx-a11y', 'import','html'],
   rules: {
     'react/jsx-filename-extension': [
       1,
@@ -25,7 +25,6 @@ module.exports = {
     'react/display-name': 0,
     'react/no-unused-state': 'off',
     'space-before-function-paren': 'off',
-    'max-len': 'off',
     'operator-linebreak': ['error', 'before'],
     'func-names': 'off'
   },
@@ -37,8 +36,5 @@ module.exports = {
     FileReader: true,
     Blob: true,
     navigator: true
-  },
-  settings: {
-    'import/ignore': ['/node_modules', 'build', 'coverage']
   }
 };
