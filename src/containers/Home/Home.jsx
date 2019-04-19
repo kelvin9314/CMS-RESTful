@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
+// import firebase from 'firebase';
+// import DB_CONFIG from '../../config/config';
 
 const { Header, Content, Footer, Sider } = Layout;
-
+// const db = firebase.initializeApp(DB_CONFIG);
+// // console.log(db);
 /**
  * @class Home
  * @extends {Component}

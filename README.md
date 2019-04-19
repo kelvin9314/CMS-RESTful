@@ -16,6 +16,15 @@ Feature：當要開始新增功能的時候，就是使用 Feature 分支的時�
 
 ## 1. 開發需求
 
+### Ref
+
+- [ Prototype ](https://marvelapp.com/6bee4jb)
+- [ UI Flow (文字版) ](https://drive.google.com/file/d/1O2AJbTUGa-cQ69ZW81ZSbT1I-6oF0ADt/view)
+- [ UI Flow (畫面版) ](https://drive.google.com/file/u/3/d/1kQ69cyPKbTSK09hn-SU555YzvtD2HXfi/view?usp=sharing)
+- [ 操作流程 ](https://drive.google.com/file/d/1h24N8Om6_YDn9H4_LU-vieTVjKHLJH1q/view)
+- [ 6F 圖書館書籍清單 ](https://docs.google.com/spreadsheets/d/1TiOETJcC9dYUQ8N1PoEI6h9_oV_9c3IfY2JpwSOh4CQ/edit#gid=1047697510)
+- [LS 功能規格](https://docs.google.com/spreadsheets/d/1umZqkwiHQggaj39Dh7Bz9-kRSv0wSf4Dj-6LbatCAC4/edit#gid=1900301281)
+
 ### 管理者角色頁面
 
 - 查詢 : 顯示圖書的庫存量 , 借出記錄 , 目前借出的人
