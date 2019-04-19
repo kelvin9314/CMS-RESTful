@@ -23,5 +23,5 @@ pages:
     paths:
       - public # GitLab pages serve from a 'public' directory
   only:
-    - develop # run on master branch
+    - master # run on master branch
 

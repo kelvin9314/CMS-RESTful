@@ -5,15 +5,8 @@ module.exports = {
     'jest/globals': true
   },
   parser: 'babel-eslint',
-  extends: [
-    'eslint:recommended',
-    'airbnb',
-    'prettier',
-    'prettier/react',
-    'jest-enzyme',
-    'plugin:jest/recommended'
-  ],
-  plugins: ['prettier', 'jest', 'react', 'jsx-a11y', 'import','html'],
+  extends: ['eslint:recommended', 'airbnb', 'prettier', 'prettier/react', 'jest-enzyme', 'plugin:jest/recommended'],
+  plugins: ['prettier', 'jest', 'react', 'jsx-a11y', 'import', 'html'],
   rules: {
     'react/jsx-filename-extension': [
       1,
@@ -26,7 +19,8 @@ module.exports = {
     'react/no-unused-state': 'off',
     'space-before-function-paren': 'off',
     'operator-linebreak': ['error', 'before'],
-    'func-names': 'off'
+    'func-names': 'off',
+    'max-len': 'off'
   },
   globals: {
     window: true,

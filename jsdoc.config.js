@@ -5,7 +5,7 @@ module.exports = {
   },
   source: {
     include: ['./src'],
-    exclude: ['./src/__test__'],
+    exclude: ['./src/__test__', './src/**/__test__'],
     includePattern: '.+\\.js(doc)?$',
     excludePattern: '(^|\\/|\\\\)_'
   },
