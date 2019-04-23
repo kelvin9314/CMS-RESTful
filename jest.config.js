@@ -1,5 +1,5 @@
 module.exports = {
-  setupFiles: ['<rootDir>/src/__test__/setupTest.js', 'core-js'],
+  setupFiles: ['./src/admin/client/__test__/setupTest.js', 'core-js'],
   testMatch: ['**/__test__/**/?*.test.js?(x)'],
   verbose: true,
   // collectCoverage: true,

@@ -2,6 +2,6 @@
 build/*
 !build/index.js
 
-config/
-scripts/
-docs/
+config/*
+scripts/*
+docs/*

@@ -4,7 +4,7 @@ import './style/index.css';
 import './style/Home.css';
 import 'antd/dist/antd.css';
 
-import Home from './containers/Home/Home';
+import Home from './containers/home/home';
 // import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<Home />, document.getElementById('root'));

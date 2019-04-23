@@ -4,8 +4,8 @@ module.exports = {
     dictionaries: ['jsdoc', 'closure']
   },
   source: {
-    include: ['./src'],
-    exclude: ['./src/__test__', './src/**/__test__'],
+    include: ['./src/admin/client/'],
+    exclude: ['./src/admin/client/**/__test__/'],
     includePattern: '.+\\.js(doc)?$',
     excludePattern: '(^|\\/|\\\\)_'
   },
