@@ -2,7 +2,8 @@ module.exports = {
   env: {
     es6: true,
     browser: true,
-    'jest/globals': true
+    'jest/globals': true,
+    node: true
   },
   parser: 'babel-eslint',
   extends: ['eslint:recommended', 'airbnb', 'prettier', 'prettier/react', 'jest-enzyme', 'plugin:jest/recommended'],
