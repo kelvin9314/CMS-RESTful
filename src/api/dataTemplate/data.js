@@ -8,9 +8,9 @@ export const BookList = [
     author: '', // 作者  (如果未來有ISBN碼就不用)
     yearOfPublication: '', // 出版年份
     status: '', // Free , Occupied or Disable
-    category: '', // UCD, DEV, MNG , ENT, COD, MAG (上架類別)
+    genre: '', // UCD, DEV, MNG , ENT, COD, MAG (上架類別)
     currentBorrowerId: '', // FK && this data only visible by Admin
-    donorID: '', // FK , 捐贈者
+    donor: '', // 捐贈者
     remind: ''
   }
 ];
@@ -18,11 +18,10 @@ export const BookList = [
 export const RentalRecord = [
   {
     rentalId: '', // PK
-    // startDate: moment(), // 借閱日期
-    // endDate: moment(),  // 歸還日期
+    startDate: Date(), // 借閱日期
+    endDate: Date(), // 歸還日期
     bookId: '', // Fk
-    borrower: '', // Fk
-
+    borrower: '' // Fk
   }
 ];
 

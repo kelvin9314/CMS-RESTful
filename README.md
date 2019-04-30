@@ -65,8 +65,8 @@ Feature：當要開始新增功能的時候，就是使用 Feature 分支的時�
 
 you need to run:
 
+- npm before-env
 - npm install
-- cp .example.env .env
 
 In the project directory, you can run:
 

@@ -7,7 +7,7 @@ const database = process.env.DB_database;
 
 function getConnectionDB() {
   mongoose.set('useNewUrlParser', true);
-  // mongoose.set('useCreateIndex', true);
+  mongoose.set('useCreateIndex', true);
 
   /* running the mongoDB locally on my onw laptop while developing (kelvin) */
   mongoose.connect(`mongodb://${server}/${database}`, err => {

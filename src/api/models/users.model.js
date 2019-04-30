@@ -1,32 +1,31 @@
 const mongoose = require('mongoose');
 
 const usersSchema = new mongoose.Schema({
-  /* 員工編號 */
   employeeID: {
-    type: String,
-    required: true,
+    type: String, // 員工編號
     index: true,
     unique: true,
     trim: true,
     minlength: 5,
-    maxlength: 5
+    maxlength: 5,
+    required: true
   },
   name: {
     type: String,
-    required: true,
     unique: true,
-    maxlength: 20
+    maxlength: 20,
+    required: true
   },
   email: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
+    required: true
   },
   password: {
     type: String,
-    required: true,
     minlength: 8,
-    maxlength: 72 // BCrypt is limited to 72 bytes
+    maxlength: 72, // BCrypt is limited to 72 bytes
+    required: true
   },
   isAdmin: {
     type: Boolean,
@@ -34,6 +33,6 @@ const usersSchema = new mongoose.Schema({
   }
 });
 
-usersSchema.set('autoIndex', false);
+// usersSchema.set('autoIndex', false);
 
 module.exports = mongoose.model('Users', usersSchema);

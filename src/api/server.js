@@ -1,5 +1,6 @@
-// const jwt = require('jsonwebtoken');
-
+/**
+ * This a the main file of the server
+ */
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -7,11 +8,17 @@ const cors = require('cors');
 // const https = require('https');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const db = require('./models/db');
 const categoriesRoute = require('./controllers/categories');
 const jwtRoute = require('./controllers/jwt');
 const usersController = require('./controllers/usersController');
 
+// const booksController = require('./controllers/booksController');
+
 const server = express();
+
+// connect to DB
+db.getConnectionDB();
 
 // enable CORS - Cross Origin Resource Sharing
 server.use(cors());
@@ -27,14 +34,15 @@ server.use(morgan('combined'));
 server.use(categoriesRoute);
 server.use(jwtRoute);
 server.use(usersController);
+// server.use(booksController);
 
 // QueryString => query property on the request object
 // localhost:8080/api?name=kelvin&&age=20
 server.get('/api', (req, res) => {
   if (req.query.name) {
-    res.send(`You have a requested an api ${req.query.name}`);
+    res.json(`You have a requested an api ${req.query.name}`);
   } else {
-    res.send(`You have a requested an api`);
+    res.json(`You have a requested an api`);
   }
 });
 
