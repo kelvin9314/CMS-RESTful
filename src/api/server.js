@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * This a the main file of the server
  */
@@ -9,11 +10,9 @@ const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const db = require('./models/db');
-const categoriesRoute = require('./controllers/categories');
-const jwtRoute = require('./controllers/jwt');
+const errorMsg = require('./libs/errorMsg');
 const usersController = require('./controllers/usersController');
-
-// const booksController = require('./controllers/booksController');
+const booksController = require('./controllers/booksController');
 
 const server = express();
 
@@ -25,25 +24,19 @@ server.use(cors());
 // parse body params and attache them to req.body
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
-// server.use((req, res, next) => {
-//   // eslint-disable-next-line no-console
-//   console.log(`${new Date().toString()} => ${req.originalUrl}`);
-//   next();
-// });
 server.use(morgan('combined'));
-server.use(categoriesRoute);
-server.use(jwtRoute);
-server.use(usersController);
-// server.use(booksController);
 
-// QueryString => query property on the request object
-// localhost:8080/api?name=kelvin&&age=20
-server.get('/api', (req, res) => {
-  if (req.query.name) {
-    res.json(`You have a requested an api ${req.query.name}`);
-  } else {
-    res.json(`You have a requested an api`);
-  }
+server.use(usersController);
+server.use(booksController);
+
+/* 404 handler */
+server.use((req, res) => {
+  res.status(404).json({ Errpr: true, Message: errorMsg.urlNotFound() });
+});
+
+/* error handler */
+server.use((err, req, res, next) => {
+  res.status(err.status || 500);
 });
 
 const port = process.env.SERVER_PORT || 8080;

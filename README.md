@@ -32,13 +32,12 @@ Feature：當要開始新增功能的時候，就是使用 Feature 分支的時�
 
 ### 資料
 
-- 預計使用 mongoDB 去儲存圖書資料 和 借出記錄
-  with : mLab Clould ?
+- 預計使用 mongoDB 去儲存圖書資料 和 借出記錄 (dev: localhost)
 
-- 圖書 Columns
+* 圖書 Columns
   {書名,作者,ISBN,書籍編號,分類 ,出版年份, etc}
 
-- 分類:
+* 分類:
   1.UCD , 產品,策略設計/脈絡思維類
   2.DEV , 自我成長 / 心靈雞湯類
   3.MNG , 管理/行銷/理財類
@@ -46,11 +45,24 @@ Feature：當要開始新增功能的時候，就是使用 Feature 分支的時�
   5.COD , 程式開發/技術類
   6.MAG , 雜誌類
 
-- 每本書借用期限: 1 個月
+* 每本書借用期限: 1 個月
 
 ## 框架＆套件
 
-- antd
+- Back-end-server:
+
+  - Node.js
+  - Express.js
+  - Mongoose
+  - Json Web Token
+  - Joi
+  - Bcrypt
+
+- Back-end-admin-website:
+  - React
+  -
+
+Others please reference to package.json
 
 ### App 使用者角色頁面
 
@@ -65,13 +77,23 @@ Feature：當要開始新增功能的時候，就是使用 Feature 分支的時�
 
 you need to run:
 
+```
 - npm before-env
 - npm install
+```
 
 In the project directory, you can run:
 
-### `npm start`
+```
+- npm run dev
+- npm run server
+- npm run server-watch
+- npm run start
+- npm run build
+- npm run test
+- npm run coverage
+- npm run jsdoc
+- npm run jsdoc-admin
+- npm run jsdoc-api
 
-### `npm test`
-
-### `npm run build`
+```

@@ -4,7 +4,13 @@ module.exports = {
     dictionaries: ['jsdoc', 'closure']
   },
   source: {
-    include: ['src/api/controllers/functions/', 'src/api/controllers/', 'src/api/models/', 'src/api/server.js'],
+    include: [
+      'src/api/controllers/functions',
+      'src/api/controllers',
+      'src/api/models/db.js',
+      'src/api/server.js',
+      'src/api/libs'
+    ],
     includePattern: '.+\\.js(doc)?$',
     excludePattern: '(^|\\/|\\\\)_'
   },

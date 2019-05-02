@@ -28,7 +28,7 @@ function verifyToken(req, res, next) {
     next();
   } else {
     // Forbidden
-    res.status(403).send('Missing Bearer in headers.authorization ');
+    res.status(403).send({ Error: true, Message: 'Missing Bearer in headers.authorization' });
     // res.status(403);
   }
 }
