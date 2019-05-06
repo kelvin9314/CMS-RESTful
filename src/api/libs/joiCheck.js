@@ -66,7 +66,6 @@ ValidDateBooksUpdate = booksData => {
     dateOfEntry: Joi.date()
       .min('2016-01-01')
       .max('now'),
-
     status: Joi.string().valid('Free', 'Occupied', 'Disable'),
     genre: Joi.string()
       .uppercase()
@@ -116,16 +115,13 @@ validDateUsersFormat = accountData => {
 
 validDateUsersUpdate = accountData => {
   const schema = Joi.object().keys({
-    employeeID: Joi.string()
-      .regex(/^[0-9]{5,5}$/),
+    employeeID: Joi.string().regex(/^[0-9]{5,5}$/),
     name: Joi.string()
       .lowercase()
       .max(30)
       .trim(),
-    email: Joi.string()
-      .email({ minDomainSegments: 2 }),
-    password: Joi.string()
-      .regex(/^[a-zA-Z0-9_]{8,72}$/),
+    email: Joi.string().email({ minDomainSegments: 2 }),
+    password: Joi.string().regex(/^[a-zA-Z0-9_]{8,72}$/),
     isAdmin: Joi.boolean()
   });
 
@@ -151,8 +147,10 @@ validDateLoginFormat = loginData => {
   return result;
 };
 
-module.exports.ValidDateBooksFormat = ValidDateBooksFormat;
-module.exports.validDateUsersFormat = validDateUsersFormat;
-module.exports.validDateLoginFormat = validDateLoginFormat;
-module.exports.ValidDateBooksUpdate = ValidDateBooksUpdate;
-module.exports.validDateUsersUpdate = validDateUsersUpdate;
+module.exports = {
+  ValidDateBooksFormat,
+  validDateUsersFormat,
+  validDateLoginFormat,
+  ValidDateBooksUpdate,
+  validDateUsersUpdate
+};

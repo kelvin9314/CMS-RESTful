@@ -1,0 +1,291 @@
+{
+	"variables": [],
+	"info": {
+		"name": "CMS",
+		"_postman_id": "e087d4c7-1a57-210d-f45d-c4f19ccecb0d",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "users",
+			"description": "",
+			"item": [
+				{
+					"name": "register user",
+					"request": {
+						"url": "http://localhost:8080/users/register",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employeeID\": \"12345\",\n  \"name\": \"mok\",\n  \"email\": \"mok@program.com.tw\",\n  \"password\": \"12345678_\"\n}\n"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "user login",
+					"request": {
+						"url": "http://localhost:8080/users/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"employeeID\": \"12345\",\n\t\"password\": \"12345678_\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get users/list",
+					"request": {
+						"url": "http://localhost:8080/users/list",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtcGxveWVlSUQiOiIxMDgwNSIsIm5hbWUiOiJrZWx2aW4iLCJlbWFpbCI6ImtlbHZpbkBwcm9ncmFtLmNvbS50dyJ9LCJpYXQiOjE1NTY3NjAyOTl9.U_p6UfxAsabxynJzTBz2NqYYF19BrmhiZAS7ZnYxSbU",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete users/delete",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8080/users/delete?employeeID=12345",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "employeeID",
+									"value": "12345",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtcGxveWVlSUQiOiIxMDgwNSIsIm5hbWUiOiJrZWx2aW4iLCJlbWFpbCI6ImtlbHZpbkBwcm9ncmFtLmNvbS50dyJ9LCJpYXQiOjE1NTY3NjAyOTl9.U_p6UfxAsabxynJzTBz2NqYYF19BrmhiZAS7ZnYxSbU",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Put users/update",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8080/users/update?employeeID=12345",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"update"
+							],
+							"query": [
+								{
+									"key": "employeeID",
+									"value": "12345",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtcGxveWVlSUQiOiIxMDgwNSIsIm5hbWUiOiJrZWx2aW4iLCJlbWFpbCI6ImtlbHZpbkBwcm9ncmFtLmNvbS50dyJ9LCJpYXQiOjE1NTY3NjAyOTl9.U_p6UfxAsabxynJzTBz2NqYYF19BrmhiZAS7ZnYxSbU",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"GOD\"\n\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "books",
+			"description": "",
+			"item": [
+				{
+					"name": "Post  books/create",
+					"request": {
+						"url": "http://localhost:8080/books/create",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtcGxveWVlSUQiOiIxMDgwNSIsIm5hbWUiOiJrZWx2aW4iLCJlbWFpbCI6ImtlbHZpbkBwcm9ncmFtLmNvbS50dyJ9LCJpYXQiOjE1NTY3NzY0NDh9.HrTcLgjFz_MGagMIL71NCj97cXkv4E9fPoB77vdpnu0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"title\": \"設計的心理學：人性化的產品設計如何改變世界\",\n\t\"author\": \" 唐納‧諾曼\",\n\t\"yearOfPublication\": \"2014\",\n\t\"dateOfEntry\": \"2019-05-02\",\n\t\"genre\": \"ucd\",\n\t\"totalQuantity\" :1,\n\t\"availableQuantity\" :1\n\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Put  books/update",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8080/books/update?bookID=ucd01",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"books",
+								"update"
+							],
+							"query": [
+								{
+									"key": "bookID",
+									"value": "ucd01",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtcGxveWVlSUQiOiIxMDgwNSIsIm5hbWUiOiJrZWx2aW4iLCJlbWFpbCI6ImtlbHZpbkBwcm9ncmFtLmNvbS50dyJ9LCJpYXQiOjE1NTY3NzY0NDh9.HrTcLgjFz_MGagMIL71NCj97cXkv4E9fPoB77vdpnu0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"totalQuantity\" : 1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Del books/delete",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8080/books/delete?bookID=ucd01",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"books",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "bookID",
+									"value": "ucd01",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtcGxveWVlSUQiOiIxMDgwNSIsIm5hbWUiOiJrZWx2aW4iLCJlbWFpbCI6ImtlbHZpbkBwcm9ncmFtLmNvbS50dyJ9LCJpYXQiOjE1NTY3NzY0NDh9.HrTcLgjFz_MGagMIL71NCj97cXkv4E9fPoB77vdpnu0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get books/kist",
+					"request": {
+						"url": "http://localhost:8080/books/list",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtcGxveWVlSUQiOiIxMDgwNSIsIm5hbWUiOiJrZWx2aW4iLCJlbWFpbCI6ImtlbHZpbkBwcm9ncmFtLmNvbS50dyJ9LCJpYXQiOjE1NTY3NjAyOTl9.U_p6UfxAsabxynJzTBz2NqYYF19BrmhiZAS7ZnYxSbU",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

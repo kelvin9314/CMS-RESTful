@@ -35,11 +35,13 @@ const bookDeleted = () => {
   return 'User Deleted';
 };
 
-module.exports.accountCreated = accountCreated;
-module.exports.loginSuccessful = loginSuccessful;
-module.exports.userDeleted = userDeleted;
-module.exports.noContent = noContent;
-module.exports.bookCreated = bookCreated;
-module.exports.bookUpdated = bookUpdated;
-module.exports.userUpdated = userUpdated;
-module.exports.bookDeleted = bookDeleted;
+module.exports = {
+  accountCreated,
+  loginSuccessful,
+  userDeleted,
+  noContent,
+  bookCreated,
+  bookUpdated,
+  userUpdated,
+  bookDeleted
+};

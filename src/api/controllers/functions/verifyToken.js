@@ -12,6 +12,7 @@
  * or
  * Error 403
  */
+const jwt = require('jsonwebtoken');
 
 function verifyToken(req, res, next) {
   // Get auth header value
@@ -25,7 +26,17 @@ function verifyToken(req, res, next) {
     // Set the token
     req.token = bearerToken;
     // Next middleware
-    next();
+    const CheckToken = new Promise((resolve, reject) => {
+      jwt.verify(req.token, process.env.SECRET_KEY, (err, authData) => {
+        if (err) reject(err);
+        return resolve(authData);
+      });
+    });
+
+    CheckToken.then(value => {
+      req.authData = value;
+      next();
+    }).catch(() => res.status(403).send({ Error: true, Message: 'Token invalid' }));
   } else {
     // Forbidden
     res.status(403).send({ Error: true, Message: 'Missing Bearer in headers.authorization' });

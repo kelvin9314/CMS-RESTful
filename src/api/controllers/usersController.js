@@ -82,113 +82,100 @@ router.post('/users/login', (req, res) => {
  *  PUT
  *  localhost:8080/users?employeeID=12345
  */
-router.put('/users/update', verifyToken, (req, res) => {
-  jwt.verify(req.token, process.env.SECRET_KEY, async (err, authData) => {
-    if (err) {
-      res.status(403).json({ Error: true, Message: err });
-    } else {
-      const requesterID = authData.payload.employeeID;
-      const requesterName = authData.payload.name;
+router.put('/users/update', verifyToken, async (req, res) => {
+  const { authData } = req;
+  const requesterID = authData.payload.employeeID;
+  const requesterName = authData.payload.name;
 
-      const checkObject = await checkAdmin(requesterID, requesterName);
+  const checkObject = await checkAdmin(requesterID, requesterName);
 
-      if (checkObject === null) {
-        res.status(403).json({ Error: true, Message: errorMsg.permissionDenied() });
-      } else if (checkObject.isAdmin === true) {
-        if (!req.query.employeeID) return res.status(400).json({ Error: true, Message: errorMsg.missingEmployeeID() });
-        const targetID = req.query.employeeID;
+  if (checkObject === null) {
+    res.status(403).json({ Error: true, Message: errorMsg.permissionDenied() });
+  } else if (checkObject.isAdmin === true) {
+    if (!req.query.employeeID) return res.status(400).json({ Error: true, Message: errorMsg.missingEmployeeID() });
+    const targetID = req.query.employeeID;
 
-        const { error } = validDateUsersUpdate(req.body);
-        if (error) return res.status(400).json({ Error: true, Message: error.details[0].message });
+    const { error } = validDateUsersUpdate(req.body);
+    if (error) return res.status(400).json({ Error: true, Message: error.details[0].message });
 
-        if (req.body.password) {
-          const { password } = req.body;
+    if (req.body.password) {
+      const { password } = req.body;
 
-          bcrypt
-            .hash(password, saltRounds)
-            .then(hash => {
-              req.body.password = hash;
-              UsersModel.findOneAndUpdate({ employeeID: targetID }, req.body, { new: true })
-                .then(doc => res.status(202).json({ Error: false, Message: `${grantMsg.userUpdated()}`, Data: doc }))
-                .catch(e => res.status(500).json({ Error: true, Message: e }));
-            })
-            .catch(errors => res.status(500).json({ Error: true, Message: errors }));
-        } else {
+      bcrypt
+        .hash(password, saltRounds)
+        .then(hash => {
+          req.body.password = hash;
           UsersModel.findOneAndUpdate({ employeeID: targetID }, req.body, { new: true })
             .then(doc => res.status(202).json({ Error: false, Message: `${grantMsg.userUpdated()}`, Data: doc }))
             .catch(e => res.status(500).json({ Error: true, Message: e }));
-        }
-      }
+        })
+        .catch(errors => res.status(500).json({ Error: true, Message: errors }));
+    } else {
+      UsersModel.findOneAndUpdate({ employeeID: targetID }, req.body, { new: true })
+        .then(doc => res.status(202).json({ Error: false, Message: `${grantMsg.userUpdated()}`, Data: doc }))
+        .catch(e => res.status(500).json({ Error: true, Message: e }));
     }
-  });
+  }
 });
 
-router.get('/users/list', verifyToken, (req, res) => {
-  jwt.verify(req.token, process.env.SECRET_KEY, async (err, authData) => {
-    if (err) {
-      res.status(403).json({ Error: true, Message: err });
-    } else {
-      const requesterID = authData.payload.employeeID;
-      const requesterName = authData.payload.name;
+router.get('/users/list', verifyToken, async (req, res) => {
+  const { authData } = req;
+  const requesterID = authData.payload.employeeID;
+  const requesterName = authData.payload.name;
 
-      const checkObject = await checkAdmin(requesterID, requesterName);
+  const checkObject = await checkAdmin(requesterID, requesterName);
 
-      if (checkObject === null) {
-        res.status(403).json({ Error: true, Message: errorMsg.permissionDenied() });
-      } else if (checkObject.isAdmin === true) {
-        UsersModel.find({})
-          .then(users => {
-            const usersList = [];
-            users.map(user => {
-              const { employeeID, name, email, isAdmin } = user;
-              const filterData = {
-                employeeID,
-                name,
-                email,
-                isAdmin
-              };
-              return usersList.push(filterData);
-            });
-            res.status(200).json({ Error: false, Data: usersList, authData });
-          })
-          .catch(error => res.status(500).json({ Error: true, Message: error }));
-      }
-    }
-  });
+  if (checkObject === null) {
+    res.status(403).json({ Error: true, Message: errorMsg.permissionDenied() });
+  } else if (checkObject.isAdmin === true) {
+    UsersModel.find({})
+      .then(users => {
+        const usersList = [];
+        users.map(user => {
+          const { employeeID, name, email, isAdmin } = user;
+          const filterData = {
+            employeeID,
+            name,
+            email,
+            isAdmin
+          };
+          return usersList.push(filterData);
+        });
+        res.status(200).json({ Error: false, Data: usersList, authData });
+      })
+      .catch(error => {
+        res.status(500).json({ Error: true, Message: error });
+      });
+  }
 });
 
 /**
  *  delete a single user
  *  localhost:8080/users?employeeID=12345
  */
-router.delete('/users/delete', verifyToken, (req, res) => {
-  jwt.verify(req.token, process.env.SECRET_KEY, async (err, authData) => {
-    if (err) {
-      res.status(403).json({ Error: true, Message: err });
-    } else {
-      const requesterID = authData.payload.employeeID;
-      const requesterName = authData.payload.name;
+router.delete('/users/delete', verifyToken, async (req, res) => {
+  const { authData } = req;
+  const requesterID = authData.payload.employeeID;
+  const requesterName = authData.payload.name;
 
-      const checkObject = await checkAdmin(requesterID, requesterName);
+  const checkObject = await checkAdmin(requesterID, requesterName);
 
-      if (checkObject === null) {
-        res.status(403).json({ Error: true, Message: errorMsg.permissionDenied() });
-      } else if (checkObject.isAdmin === true) {
-        if (!req.query.employeeID) return res.status(400).json({ Error: true, Message: errorMsg.missingEmployeeID() });
-        const targetID = req.query.employeeID;
+  if (checkObject === null) {
+    res.status(403).json({ Error: true, Message: errorMsg.permissionDenied() });
+  } else if (checkObject.isAdmin === true) {
+    if (!req.query.employeeID) return res.status(400).json({ Error: true, Message: errorMsg.missingEmployeeID() });
+    const targetID = req.query.employeeID;
 
-        UsersModel.findOneAndDelete({ employeeID: targetID }, (error, user) => {
-          if (error) {
-            res.status(500).json({ Error: true, Message: error });
-          } else if (user === null) {
-            res.status(202).json({ Error: false, Message: grantMsg.noContent() });
-          } else {
-            res.status(202).json({ Error: false, Message: `${grantMsg.userDeleted()}`, Deleted_User: user });
-          }
-        });
+    UsersModel.findOneAndDelete({ employeeID: targetID }, (error, user) => {
+      if (error) {
+        res.status(500).json({ Error: true, Message: error });
+      } else if (user === null) {
+        res.status(202).json({ Error: false, Message: grantMsg.noContent() });
+      } else {
+        res.status(202).json({ Error: false, Message: `${grantMsg.userDeleted()}`, Deleted_User: user });
       }
-    }
-  });
+    });
+  }
 });
 
 module.exports = router;

@@ -43,15 +43,15 @@ const missingBookID = () => {
   return 'Missing bookId,e.g ...?bookID=DEV01';
 };
 
-
-
-module.exports.repeatedID = repeatedID;
-module.exports.repeatedName = repeatedName;
-module.exports.repeatedEmail = repeatedEmail;
-module.exports.loginFailure = loginFailure;
-module.exports.permissionDenied = permissionDenied;
-module.exports.missingEmployeeID = missingEmployeeID;
-module.exports.urlNotFound = urlNotFound;
-module.exports.repeatedIsbn = repeatedIsbn;
-module.exports.repeatedTitle = repeatedTitle;
-module.exports.missingBookID = missingBookID;
+module.exports = {
+  repeatedID,
+  repeatedName,
+  repeatedEmail,
+  loginFailure,
+  permissionDenied,
+  missingEmployeeID,
+  urlNotFound,
+  repeatedIsbn,
+  repeatedTitle,
+  missingBookID
+};
