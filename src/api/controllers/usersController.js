@@ -3,6 +3,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const createError = require('http-errors');
 const UsersModel = require('../models/users.model');
 require('dotenv').config();
 const verifyToken = require('./functions/verifyToken');
@@ -14,10 +15,10 @@ const { validDateUsersFormat, validDateLoginFormat } = require('../libs/joiCheck
 const router = express.Router();
 const saltRounds = 10;
 
-router.post('/users/register', async (req, res) => {
+router.post('/register', async (req, res, next) => {
   /* check the  data type */
   const { error } = validDateUsersFormat(req.body);
-  if (error) return res.status(400).json({ Error: true, Message: error.details[0].message });
+  if (error) return next(createError(400, error.details[0].message));
 
   /*  check the data is exists in DB or not  */
   const isExistsID = await UsersModel.findOne({ employeeID: req.body.employeeID }).then(doc => {
@@ -30,9 +31,9 @@ router.post('/users/register', async (req, res) => {
     return doc !== null;
   });
 
-  if (isExistsID) return res.status(400).json({ Error: true, Message: errorMsg.repeatedID() });
-  if (isExistsName) return res.status(400).json({ Error: true, Message: errorMsg.repeatedName() });
-  if (isExistsEmail) return res.status(400).json({ Error: true, Message: errorMsg.repeatedEmail() });
+  if (isExistsID) return next(createError(409, errorMsg.repeatedID()));
+  if (isExistsName) return next(createError(409, errorMsg.repeatedName()));
+  if (isExistsEmail) return next(createError(409, errorMsg.repeatedEmail()));
 
   const { password } = req.body;
 
@@ -42,15 +43,16 @@ router.post('/users/register', async (req, res) => {
     const model = new UsersModel(req.body);
     model.save().then(doc => {
       return !doc || doc.length === 0
-        ? res.status(500).json({ Error: true, doc })
-        : res.status(201).json({ Error: false, Message: grantMsg.accountCreated() });
+        ? next(createError(500))
+        : res.status(201).json({ message: grantMsg.accountCreated() });
     });
   });
 });
 
-router.post('/users/login', (req, res) => {
+router.post('/login', (req, res, next) => {
   const { error } = validDateLoginFormat(req.body);
-  if (error) return res.status(401).json({ Error: true, Message: errorMsg.loginFailure() });
+
+  if (error) return next(createError(400, errorMsg.loginFailure()));
   // if (error) return res.status(400).send(error.details[0]);
 
   UsersModel.findOne({ employeeID: req.body.employeeID })
@@ -66,14 +68,16 @@ router.post('/users/login', (req, res) => {
         /* asynchronous way , by default using HS256 */
         // jwt.sign({ payload }, process.env.SECRET_KEY, { expiresIn: '12h' }, (err, token) => {
         jwt.sign({ payload }, process.env.SECRET_KEY, (err, token) => {
-          res.status(200).json({ Error: false, Message: grantMsg.loginSuccessful(), token });
+          res.status(200).json({ message: grantMsg.loginSuccessful(), token });
         });
       } else {
-        res.status(401).json({ Error: true, Message: errorMsg.loginFailure() });
+        // password invalid
+        next(createError(401, errorMsg.loginFailure()));
       }
     })
     .catch(() => {
-      res.status(401).json({ Error: true, Message: errorMsg.loginFailure() });
+      // employeeID invalid
+      next(createError(401, errorMsg.loginFailure()));
     });
 });
 
@@ -82,21 +86,21 @@ router.post('/users/login', (req, res) => {
  *  PUT
  *  localhost:8080/users?employeeID=12345
  */
-router.put('/users/update', verifyToken, async (req, res) => {
+router.put('/update', verifyToken, async (req, res, next) => {
   const { authData } = req;
   const requesterID = authData.payload.employeeID;
   const requesterName = authData.payload.name;
 
   const checkObject = await checkAdmin(requesterID, requesterName);
 
-  if (checkObject === null) {
-    res.status(403).json({ Error: true, Message: errorMsg.permissionDenied() });
-  } else if (checkObject.isAdmin === true) {
-    if (!req.query.employeeID) return res.status(400).json({ Error: true, Message: errorMsg.missingEmployeeID() });
+  if (checkObject === null) return next(createError(403, errorMsg.permissionDenied()));
+
+  if (checkObject.isAdmin === true) {
+    if (!req.query.employeeID) return next(createError(400, errorMsg.missingEmployeeID()));
     const targetID = req.query.employeeID;
 
     const { error } = validDateUsersUpdate(req.body);
-    if (error) return res.status(400).json({ Error: true, Message: error.details[0].message });
+    if (error) return next(createError(400, error.details[0].message));
 
     if (req.body.password) {
       const { password } = req.body;
@@ -106,19 +110,19 @@ router.put('/users/update', verifyToken, async (req, res) => {
         .then(hash => {
           req.body.password = hash;
           UsersModel.findOneAndUpdate({ employeeID: targetID }, req.body, { new: true })
-            .then(doc => res.status(202).json({ Error: false, Message: `${grantMsg.userUpdated()}`, Data: doc }))
-            .catch(e => res.status(500).json({ Error: true, Message: e }));
+            .then(doc => res.status(202).json({ message: `${grantMsg.userUpdated()}`, Data: doc }))
+            .catch(e => next(createError(500, e)));
         })
-        .catch(errors => res.status(500).json({ Error: true, Message: errors }));
+        .catch(errors => next(createError(500, errors)));
     } else {
       UsersModel.findOneAndUpdate({ employeeID: targetID }, req.body, { new: true })
-        .then(doc => res.status(202).json({ Error: false, Message: `${grantMsg.userUpdated()}`, Data: doc }))
-        .catch(e => res.status(500).json({ Error: true, Message: e }));
+        .then(doc => res.status(202).json({ message: `${grantMsg.userUpdated()}`, Data: doc }))
+        .catch(e => next(createError(500, e)));
     }
   }
 });
 
-router.get('/users/list', verifyToken, async (req, res) => {
+router.get('/list', verifyToken, async (req, res, next) => {
   const { authData } = req;
   const requesterID = authData.payload.employeeID;
   const requesterName = authData.payload.name;
@@ -126,7 +130,7 @@ router.get('/users/list', verifyToken, async (req, res) => {
   const checkObject = await checkAdmin(requesterID, requesterName);
 
   if (checkObject === null) {
-    res.status(403).json({ Error: true, Message: errorMsg.permissionDenied() });
+    next(createError(403, errorMsg.permissionDenied()));
   } else if (checkObject.isAdmin === true) {
     UsersModel.find({})
       .then(users => {
@@ -141,10 +145,10 @@ router.get('/users/list', verifyToken, async (req, res) => {
           };
           return usersList.push(filterData);
         });
-        res.status(200).json({ Error: false, Data: usersList, authData });
+        res.status(200).json({ Data: usersList, authData });
       })
       .catch(error => {
-        res.status(500).json({ Error: true, Message: error });
+        next(createError(500, error));
       });
   }
 });
@@ -153,7 +157,7 @@ router.get('/users/list', verifyToken, async (req, res) => {
  *  delete a single user
  *  localhost:8080/users?employeeID=12345
  */
-router.delete('/users/delete', verifyToken, async (req, res) => {
+router.delete('/delete', verifyToken, async (req, res) => {
   const { authData } = req;
   const requesterID = authData.payload.employeeID;
   const requesterName = authData.payload.name;
@@ -161,18 +165,18 @@ router.delete('/users/delete', verifyToken, async (req, res) => {
   const checkObject = await checkAdmin(requesterID, requesterName);
 
   if (checkObject === null) {
-    res.status(403).json({ Error: true, Message: errorMsg.permissionDenied() });
+    next(createError(403, errorMsg.permissionDenied));
   } else if (checkObject.isAdmin === true) {
-    if (!req.query.employeeID) return res.status(400).json({ Error: true, Message: errorMsg.missingEmployeeID() });
+    if (!req.query.employeeID) return next(createError(400, errorMsg.missingEmployeeID()));
     const targetID = req.query.employeeID;
 
     UsersModel.findOneAndDelete({ employeeID: targetID }, (error, user) => {
       if (error) {
-        res.status(500).json({ Error: true, Message: error });
+        next(createError(500, error));
       } else if (user === null) {
-        res.status(202).json({ Error: false, Message: grantMsg.noContent() });
+        res.status(202).json({ message: grantMsg.noContent() });
       } else {
-        res.status(202).json({ Error: false, Message: `${grantMsg.userDeleted()}`, Deleted_User: user });
+        res.status(202).json({ message: `${grantMsg.userDeleted()}` });
       }
     });
   }

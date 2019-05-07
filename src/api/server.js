@@ -13,6 +13,7 @@ const db = require('./models/db');
 const errorMsg = require('./libs/errorMsg');
 const usersController = require('./controllers/usersController');
 const booksController = require('./controllers/booksController');
+const verifyToken = require('./controllers/functions/verifyToken');
 
 const server = express();
 
@@ -21,13 +22,14 @@ db.getConnectionDB();
 
 // enable CORS - Cross Origin Resource Sharing
 server.use(cors());
+server.use('/books', verifyToken);
 // parse body params and attache them to req.body
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(morgan('combined'));
 
-server.use(usersController);
-server.use(booksController);
+server.use('/users', usersController);
+server.use('/books', booksController);
 
 /* 404 handler */
 server.use((req, res) => {
@@ -36,7 +38,7 @@ server.use((req, res) => {
 
 /* error handler */
 server.use((err, req, res, next) => {
-  res.status(err.status || 500);
+  res.status(err.status || 500).json(err);
 });
 
 const port = process.env.SERVER_PORT || 8080;

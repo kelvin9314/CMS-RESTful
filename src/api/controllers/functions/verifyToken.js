@@ -13,35 +13,38 @@
  * Error 403
  */
 const jwt = require('jsonwebtoken');
+const createError = require('http-errors');
 
-function verifyToken(req, res, next) {
-  // Get auth header value
-  const bearerHeader = req.headers.authorization;
-  // Check if bearer is undefined
-  if (typeof bearerHeader !== 'undefined') {
-    // Split at the space
-    const bearer = bearerHeader.split(' ');
-    // Get token from array
-    const bearerToken = bearer[1];
-    // Set the token
-    req.token = bearerToken;
-    // Next middleware
-    const CheckToken = new Promise((resolve, reject) => {
-      jwt.verify(req.token, process.env.SECRET_KEY, (err, authData) => {
+const JWT_SECRET = process.env.SECRET_KEY;
+
+const decodeJwt = async token => {
+  try {
+    return await new Promise((resolve, reject) => {
+      jwt.verify(token, JWT_SECRET, (err, data) => {
         if (err) reject(err);
-        return resolve(authData);
+        return resolve(data);
       });
     });
-
-    CheckToken.then(value => {
-      req.authData = value;
-      next();
-    }).catch(() => res.status(403).send({ Error: true, Message: 'Token invalid' }));
-  } else {
-    // Forbidden
-    res.status(403).send({ Error: true, Message: 'Missing Bearer in headers.authorization' });
-    // res.status(403);
+  } catch (err) {
+    throw createError(403, 'Token Invalid');
   }
-}
+};
 
-module.exports = verifyToken;
+module.exports = async (req, res, next) => {
+  // Get auth header value
+  const bearerHeader = req.headers.authorization;
+  try {
+    let Bearer;
+    // Check if bearer is undefined
+    if (typeof bearerHeader === 'undefined') throw createError(401, 'Incorrect token format');
+    // Set the token
+    [Bearer, req.token] = bearerHeader.split(' ');
+
+    if (Bearer !== 'Bearer') throw createError(401, 'Incorrect token format ');
+    // Next middleware
+    req.authData = await decodeJwt(req.token);
+    next();
+  } catch (err) {
+    next(err);
+  }
+};

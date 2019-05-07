@@ -78,6 +78,7 @@ Others please reference to package.json
 you need to run:
 
 ```
+- npm install pm2 -g
 - npm before-env
 - npm install
 ```
