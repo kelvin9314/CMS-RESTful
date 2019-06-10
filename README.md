@@ -1,5 +1,4 @@
-This is a prototype of library website for MicroProgram
-Start from 2019/03/29
+Content Management System
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -16,27 +15,29 @@ Feature：當要開始新增功能的時候，就是使用 Feature 分支的時�
 
 ## 1. 開發需求
 
+### Ref
+
+- [ Prototype ](https://marvelapp.com/6bee4jb)
+- [ UI Flow (文字版) ](https://drive.google.com/file/d/1O2AJbTUGa-cQ69ZW81ZSbT1I-6oF0ADt/view)
+- [ UI Flow (畫面版) ](https://drive.google.com/file/u/3/d/1kQ69cyPKbTSK09hn-SU555YzvtD2HXfi/view?usp=sharing)
+- [ 操作流程 ](https://drive.google.com/file/d/1h24N8Om6_YDn9H4_LU-vieTVjKHLJH1q/view)
+- [ 6F 圖書館書籍清單 ](https://docs.google.com/spreadsheets/d/1TiOETJcC9dYUQ8N1PoEI6h9_oV_9c3IfY2JpwSOh4CQ/edit#gid=1047697510)
+- [LS 功能規格](https://docs.google.com/spreadsheets/d/1umZqkwiHQggaj39Dh7Bz9-kRSv0wSf4Dj-6LbatCAC4/edit#gid=1900301281)
+
 ### 管理者角色頁面
 
 - 查詢 : 顯示圖書的庫存量 , 借出記錄 , 目前借出的人
 - 新增 : 新增圖書
 - Edit : e.g. 修改同一本圖書的庫存量 , 圖書資料修正
 
-### 使用者角色頁面
-
-- 查詢 : 查詢圖書可借用的庫存量 (不會顯示目前借出的人)
-- 預約 :
-- 借書 : 需填寫 { 書籍編號 ,書名 ,借用日期 ,借閱人 ,分機}
-- 還書
-
 ### 資料
 
-- 預計使用 json 檔文件去儲存圖書資料 和 借出記錄
+- 預計使用 mongoDB 去儲存圖書資料 和 借出記錄 (dev: localhost)
 
-- 圖書 Columns
+* 圖書 Columns
   {書名,作者,ISBN,書籍編號,分類 ,出版年份, etc}
 
-- 分類:
+* 分類:
   1.UCD , 產品,策略設計/脈絡思維類
   2.DEV , 自我成長 / 心靈雞湯類
   3.MNG , 管理/行銷/理財類
@@ -44,75 +45,56 @@ Feature：當要開始新增功能的時候，就是使用 Feature 分支的時�
   5.COD , 程式開發/技術類
   6.MAG , 雜誌類
 
-- 每本書借用期限: 1 個月
+* 每本書借用期限: 1 個月
 
 ## 框架＆套件
 
-- antd
+- Back-end-server:
+
+  - Node.js
+  - Express.js
+  - Mongoose
+  - Json Web Token
+  - Joi
+  - Bcrypt
+
+- Back-end-admin-website:
+  - React
+  -
+
+Others please reference to package.json
+
+### App 使用者角色頁面
+
+- 查詢 : 查詢圖書可借用的庫存量 (不會顯示目前借出的人)
+- 預約 :
+- 借書 : 需填寫 { 書籍編號 ,書名 ,借用日期 ,借閱人 ,分機}
+- 還書
 
 ## Available Scripts
 
+### Before :
+
+you need to run:
+
+```
+- npm install pm2 -g
+- npm before-env
+- npm install
+```
+
 In the project directory, you can run:
 
-### `npm start`
+```
+- npm run dev
+- npm run server
+- npm run server-watch
+- npm run start
+- npm run build
+- npm run test
+- npm run coverage
+- npm run jsdoc
+- npm run jsdoc-admin
+- npm run jsdoc-api
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 
 /**
  * @class App
@@ -40,9 +40,7 @@ class App extends Component {
 
   render() {
     const { dropdownOpen } = this.state;
-    return (
-    
-    );
+    return { dropdownOpen };
   }
 }
 
