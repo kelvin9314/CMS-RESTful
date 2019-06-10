@@ -9,6 +9,7 @@ const checkAdmin = require('./functions/checkAdmin');
 const errorMsg = require('../libs/errorMsg');
 const grantMsg = require('../libs/grantMsg');
 const { ValidDateBooksFormat } = require('../libs/joiCheck');
+const checkBookExists = require('../controllers/functions/checkBookExists');
 
 const router = express.Router();
 
@@ -74,7 +75,7 @@ router.post('/create', async (req, res, next) => {
  *  PUT
  *  localhost:8080/users?bookID=DEV01
  */
-router.put('/update', async (req, res) => {
+router.put('/update', async (req, res, next) => {
   const { authData } = req;
   const requesterID = authData.payload.employeeID;
   const requesterName = authData.payload.name;
@@ -86,6 +87,11 @@ router.put('/update', async (req, res) => {
   } else if (checkObject.isAdmin === true) {
     if (!req.query.bookID) return next(createError(400, errorMsg.missingBookID()));
     const targetID = req.query.bookID.toUpperCase();
+
+    // 檢查需要更新資料的book 是否存在
+    const bookExists = await checkBookExists(targetID);
+    if (bookExists === null)
+      return next(createError(410, 'This book is not exists, please check your url query string'));
 
     const { error } = ValidDateBooksUpdate(req.body);
     if (error) return next(createError(400, error.details[0].message));

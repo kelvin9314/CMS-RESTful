@@ -32,5 +32,4 @@ function closeConnectionDB() {
   });
 }
 
-module.exports.getConnectionDB = getConnectionDB;
-module.exports.closeConnectionDB = closeConnectionDB;
+module.exports = { getConnectionDB, closeConnectionDB };

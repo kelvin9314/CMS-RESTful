@@ -9,7 +9,8 @@ const UsersModel = require('../../models/users.model');
  * @function
  * @returns true -> 該user 是admin OR null -> 該user 不是admin
  */
-function checkAdmin(requesterID, requesterName) {
+
+module.exports = (requesterID, requesterName) => {
   const result = UsersModel.findOne({
     employeeID: requesterID,
     name: requesterName,
@@ -17,6 +18,4 @@ function checkAdmin(requesterID, requesterName) {
   }).lean();
 
   return result;
-}
-
-module.exports = checkAdmin;
+};

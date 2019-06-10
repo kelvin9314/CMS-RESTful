@@ -8,6 +8,7 @@ const UsersModel = require('../models/users.model');
 require('dotenv').config();
 const verifyToken = require('./functions/verifyToken');
 const checkAdmin = require('./functions/checkAdmin');
+const checkUserExists = require('./functions/checkUserExists');
 const errorMsg = require('../libs/errorMsg');
 const grantMsg = require('../libs/grantMsg');
 const { validDateUsersFormat, validDateLoginFormat } = require('../libs/joiCheck');
@@ -37,7 +38,8 @@ router.post('/register', async (req, res, next) => {
 
   const { password } = req.body;
 
-  bcrypt.hash(password, saltRounds).then(hash => {
+  bcrypt.hash(password, saltRounds)
+  .then(hash => {
     req.body.password = hash;
 
     const model = new UsersModel(req.body);
@@ -46,6 +48,9 @@ router.post('/register', async (req, res, next) => {
         ? next(createError(500))
         : res.status(201).json({ message: grantMsg.accountCreated() });
     });
+  })
+  .catch(err => {
+    throw err
   });
 });
 
@@ -98,6 +103,13 @@ router.put('/update', verifyToken, async (req, res, next) => {
   if (checkObject.isAdmin === true) {
     if (!req.query.employeeID) return next(createError(400, errorMsg.missingEmployeeID()));
     const targetID = req.query.employeeID;
+    // console.log(req.params);
+    // const targetID = req.params.employeeID;
+
+    // 檢查需要更新資料的user 是否存在
+    const userExists = await checkUserExists(targetID);
+    if (userExists === null)
+      return next(createError(410, 'This user is not exists, please check your url query string'));
 
     const { error } = validDateUsersUpdate(req.body);
     if (error) return next(createError(400, error.details[0].message));

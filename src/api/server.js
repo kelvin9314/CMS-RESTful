@@ -4,6 +4,7 @@
  */
 require('dotenv').config();
 const express = require('express');
+const createError = require('http-errors');
 const cors = require('cors');
 // const fse = require('fs-extra');
 // const https = require('https');
@@ -25,15 +26,15 @@ server.use(cors());
 server.use('/books', verifyToken);
 // parse body params and attache them to req.body
 server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: true }));
+server.use(bodyParser.urlencoded({ extended: false }));
 server.use(morgan('combined'));
 
 server.use('/users', usersController);
 server.use('/books', booksController);
 
 /* 404 handler */
-server.use((req, res) => {
-  res.status(404).json({ Errpr: true, Message: errorMsg.urlNotFound() });
+server.use((req, res, next) => {
+  next(createError(404, errorMsg.urlNotFound()));
 });
 
 /* error handler */
